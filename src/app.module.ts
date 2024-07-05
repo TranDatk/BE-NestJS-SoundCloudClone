@@ -25,10 +25,10 @@ import { PlaylistsModule } from './playlists/playlists.module';
     MongooseModule.forRootAsync({
       imports: [
         ConfigModule,
-        ThrottlerModule.forRoot([{
+        ThrottlerModule.forRoot({
           ttl: 60,
           limit: 10,
-        }]),
+        }),
         ScheduleModule.forRoot()
       ],
       useFactory: async (configService: ConfigService) => ({
