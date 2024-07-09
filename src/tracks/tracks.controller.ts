@@ -19,7 +19,7 @@ export class TracksController {
   }
 
   @ResponseMessage('Fetch list track with paginate')
-  @Get('/user-track')
+  @Get('')
   findAll(
     @Query("current") currentPage: string,
     @Query("pageSize") limit: string,
@@ -29,7 +29,7 @@ export class TracksController {
   }
 
   @ResponseMessage("Fetch list user track with paginate")
-  @Get()
+  @Get('/user-track')
   FetchUserTrack(
     @Query("current") currentPage: string,
     @Query("pageSize") limit: string,

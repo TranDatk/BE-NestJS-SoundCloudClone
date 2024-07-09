@@ -26,6 +26,7 @@ export class TracksService {
       ...createTrackDto,
       view: 0,
       like: 0,
+      user: user._id,
       createdBy: {
         _id: user._id,
         email: user.email,
@@ -80,6 +81,15 @@ export class TracksService {
 
     const results = await this.trackModel.find(filter)
       .skip(offset)
+      .populate(
+        {
+          path: 'user',
+          select: {
+            name: 1,
+            _id: 1,
+          }
+        }
+      )
       .limit(defaultLimit)
       .sort(sort as any)
       .exec();
