@@ -1,6 +1,7 @@
 import { Controller, Get } from "@nestjs/common";
 import { HealthCheck, HealthCheckService, MongooseHealthIndicator } from "@nestjs/terminus";
 import { Public } from "src/custom-decorators/is-public-decorator";
+import { Cron, CronExpression } from "@nestjs/schedule";
 
 @Controller('health')
 export class HealthController {
