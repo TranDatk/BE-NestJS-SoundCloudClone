@@ -1,4 +1,4 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, Logger } from "@nestjs/common";
 import { HealthCheck, HealthCheckService, MongooseHealthIndicator } from "@nestjs/terminus";
 import { Public } from "src/custom-decorators/is-public-decorator";
 import { Cron, CronExpression } from "@nestjs/schedule";
@@ -18,8 +18,12 @@ export class HealthController {
         ]);
     }
 
-  @Cron(CronExpression.EVERY_10_MINUTES)
-    restartRender() {
-        fetch('https://soundcloudclone-nest.onrender.com/api/v1/genres')
+    @Cron(CronExpression.EVERY_10_MINUTES)
+    async restartRender() {
+        const res = await fetch('https://soundcloudclone-nest.onrender.com/api/v1/genres');
+        if (res) {
+            const logger = new Logger('render.com');
+            logger.log('Cronjob restart successfully!')
+        }
     }
 }

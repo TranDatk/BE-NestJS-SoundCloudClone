@@ -419,6 +419,21 @@ export const INIT_PERMISSIONS = [
         "__v": 0
     },
     {
+        "name": "Fetch user track",
+        "apiPath": "/api/v1/tracks/user-track",
+        "method": "GET",
+        "module": "TRACKS",
+        "createdBy": {
+            "_id": "6683b041ead26dd9855eb53a",
+            "email": "admin@gmail.com"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2023-06-15T09:12:51.974Z",
+        "updatedAt": "2023-06-15T09:12:51.974Z",
+        "__v": 0
+    },
+    {
         "name": "Check like",
         "apiPath": "/api/v1/likes/check/:id",
         "method": "GET",

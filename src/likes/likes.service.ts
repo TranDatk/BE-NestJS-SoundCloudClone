@@ -30,13 +30,13 @@ export class LikesService {
           ...createLikeDto
         });
 
-        if (createLikeDto.like) {
+        if (createLikeDto?.like) {
           await this.trackModel.findByIdAndUpdate(createLikeDto.track, {
-            like: (track?.like ?? 0) + 1,
+            $inc: { 'like': 1 }
           });
         } else {
           await this.trackModel.findByIdAndUpdate(createLikeDto.track, {
-            like: (track?.like ?? 1) - 1,
+            $inc: { 'like': -1 }
           });
         }
 

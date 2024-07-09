@@ -69,6 +69,31 @@ export class TracksService {
     };
   }
 
+  async fetchUserTrack(currentPage: number, limit: number, user: IUser) {
+    const filter = { user: user._id };
+    const sort = { createdAt: -1 }
+
+    const offset = (+currentPage - 1) * (+limit);
+    const defaultLimit = +limit ? +limit : 10;
+    const totalItems = (await this.trackModel.find(filter)).length;
+    const totalPages = Math.ceil(totalItems / defaultLimit);
+
+    const results = await this.trackModel.find(filter)
+      .skip(offset)
+      .limit(defaultLimit)
+      .sort(sort as any)
+      .exec();
+
+    return {
+      meta: {
+        current: currentPage ? currentPage = currentPage : currentPage = 1,
+        pageSize: limit ? limit = limit : limit = defaultLimit,
+        pages: totalPages,
+        total: totalItems
+      },
+      results
+    };
+  }
 
   async findTopTrackByGenre(limit: number, genreName: string) {
     const genre = await this.genreModel.findOne({ name: genreName }).exec();
@@ -104,7 +129,7 @@ export class TracksService {
       .populate(
         {
           path: 'user',
-          select: { _id: 1, email: 1, avatar: 1 }
+          select: { _id: 1, email: 1, avatar: 1, name: 1 }
         });;
   }
 
@@ -172,6 +197,30 @@ export class TracksService {
           resolve(data);
         }
       });
+    });
+  }
+
+  async searchTrack(keyword: string) {
+    const rgx = (pattern) => new RegExp(`.*${pattern}.*`, 'i');
+    const searchRgx = rgx(keyword);
+
+    return await this.trackModel.find({
+      $or: [
+        { 'createdBy.name': { $regex: searchRgx } },
+        { title: { $regex: searchRgx } },
+      ],
+    })
+      .select({ _id: 1, title: 1, description: 1, photo: 1 })
+      .limit(5);
+  }
+
+  async increaseView(trackId: string) {
+    if (!mongoose.Types.ObjectId.isValid(trackId)) {
+      throw new InvalidIdException(trackId);
+    }
+
+    return await this.trackModel.findByIdAndUpdate(trackId, {
+      $inc: { 'view': 1 }
     });
   }
 }

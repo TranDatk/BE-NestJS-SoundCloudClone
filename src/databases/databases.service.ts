@@ -48,6 +48,7 @@ export class DatabasesService implements OnModuleInit {
                         { apiPath: '/api/v1/likes', method: 'GET' },
                         { apiPath: '/api/v1/files/upload', method: 'POST' },
                         { apiPath: '/api/v1/tracks', method: 'POST' },
+                        { apiPath: '/api/v1/tracks/user-track', method: 'GET' },
                         { apiPath: '/api/v1/tracks', method: 'GET' },
                         { apiPath: '/api/v1/playlists', method: 'POST' },
                         { apiPath: '/api/v1/playlists', method: 'GET' },

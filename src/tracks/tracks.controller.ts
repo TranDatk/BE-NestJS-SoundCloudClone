@@ -19,13 +19,23 @@ export class TracksController {
   }
 
   @ResponseMessage('Fetch list track with paginate')
-  @Get()
+  @Get('/user-track')
   findAll(
     @Query("current") currentPage: string,
     @Query("pageSize") limit: string,
     @Query() qs: string,
   ) {
     return this.tracksService.findAll(+currentPage, +limit, qs);
+  }
+
+  @ResponseMessage("Fetch list user track with paginate")
+  @Get()
+  FetchUserTrack(
+    @Query("current") currentPage: string,
+    @Query("pageSize") limit: string,
+    @User() user: IUser
+  ) {
+    return this.tracksService.fetchUserTrack(+currentPage, +limit, user);
   }
 
   @Public()
@@ -70,4 +80,21 @@ export class TracksController {
     res.end(audioBuffer);
   }
 
+  @Public()
+  @ResponseMessage('Fetch tracks by search')
+  @Post('/search')
+  searchTrack(
+    @Body("keyword") keyword: string,
+  ) {
+    return this.tracksService.searchTrack(keyword);
+  }
+
+  @Public()
+  @ResponseMessage('Increase view for track')
+  @Post('/increase-view')
+  increaseView(
+    @Body("trackId") trackId: string,
+  ) {
+    return this.tracksService.increaseView(trackId);
+  }
 }
