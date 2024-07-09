@@ -16,4 +16,9 @@ export class HealthController {
             () => this.db.pingCheck('database'),
         ]);
     }
+
+  @Cron(CronExpression.EVERY_10_MINUTES)
+    restartRender() {
+        fetch('https://soundcloudclone-nest.onrender.com/api/v1/genres')
+    }
 }
