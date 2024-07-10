@@ -569,6 +569,51 @@ export const INIT_PERMISSIONS = [
         "updatedAt": "2023-06-15T06:59:31.898Z",
         "__v": 0
     },
+    {
+        "name": "create a follower",
+        "apiPath": "/api/v1/followers",
+        "method": "POST",
+        "module": "FOLLOWERS",
+        "createdBy": {
+            "_id": "6684c50ca995464eae29594b",
+            "email": "admin@gmail.com"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2023-06-15T06:59:31.898Z",
+        "updatedAt": "2023-06-15T06:59:31.898Z",
+        "__v": 0
+    },
+    {
+        "name": "Ferch all authors was followed",
+        "apiPath": "/api/v1/followers",
+        "method": "GET",
+        "module": "FOLLOWERS",
+        "createdBy": {
+            "_id": "6684c50ca995464eae29594b",
+            "email": "admin@gmail.com"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2023-06-15T06:59:31.898Z",
+        "updatedAt": "2023-06-15T06:59:31.898Z",
+        "__v": 0
+    },
+    {
+        "name": "Ferch authors that user was followed",
+        "apiPath": "/api/v1/followers/:id",
+        "method": "GET",
+        "module": "FOLLOWERS",
+        "createdBy": {
+            "_id": "6684c50ca995464eae29594b",
+            "email": "admin@gmail.com"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2023-06-15T06:59:31.898Z",
+        "updatedAt": "2023-06-15T06:59:31.898Z",
+        "__v": 0
+    },
 ]
 
 export const INIT_GENRES = [
@@ -577,7 +622,7 @@ export const INIT_GENRES = [
         "name": "Ballad",
         "description": "It is a genre of music with gentle, deep melodies and lyrics that often carry content about love, life and human thoughts and feelings. Ballad music is often expressed through the singer's inspiring and emotional singing.",
         "createdBy": {
-            "_id": "6684016906966664a9bca198",
+            "_id": "6684c50ca995464eae29594b",
             "email": "admin@gmail.com",
             "name": "I'm admin"
         },
@@ -592,7 +637,7 @@ export const INIT_GENRES = [
         "name": "POP",
         "description": "It is the most popular music genre today, with catchy melodies and lyrics that are easy to understand and memorize. Pop singers often have a youthful, dynamic style and use a lot of choreography in their MVs.",
         "createdBy": {
-            "_id": "6684016906966664a9bca198",
+            "_id": "6684c50ca995464eae29594b",
             "email": "admin@gmail.com",
             "name": "I'm admin"
         },
@@ -600,6 +645,21 @@ export const INIT_GENRES = [
         "deletedAt": null,
         "createdAt": "2024-07-02T14:10:44.978Z",
         "updatedAt": "2024-07-02T14:10:44.978Z",
+        "__v": 0
+    },
+    {
+        "_id": "668d4767aac7e1fbdc5b0fc9",
+        "name": "Electronic",
+        "description": "The tag 'electronic' is a broad term that can be used to describe a wide variety of music that is produced using electronic instruments and technology. ",
+        "createdBy": {
+            "_id": "6684c50ca995464eae29594b",
+            "email": "admin@gmail.com",
+            "name": "I'm admin"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2024-07-09T14:21:27.090Z",
+        "updatedAt": "2024-07-09T14:21:27.090Z",
         "__v": 0
     }
 ]
@@ -730,5 +790,130 @@ export const INIT_TRACKS = [
         "__v": 0,
         "like": 0,
         "view": 1
+    },
+    {
+        "title": "BRODYAGA FUNK",
+        "description": "...",
+        "photo": "car-1720536809245.jpg",
+        "like": 0,
+        "view": 0,
+        "url": "BRODYAGAFUNK-1720536791202.mp3",
+        "user": "668cf8ff5e7d98319807efcf",
+        "genre": "668d4767aac7e1fbdc5b0fc9",
+        "createdBy": {
+            "_id": "668cf8ff5e7d98319807efcf",
+            "email": "user1@gmail.com",
+            "name": "I'm user 1"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2024-07-09T14:53:32.907Z",
+        "updatedAt": "2024-07-09T14:53:32.907Z",
+        "__v": 0
+    },
+    {
+        "_id": "668d503ff2d0996a1de5198c",
+        "title": "Artemas I Like The Way You Kiss Me",
+        "description": "...",
+        "photo": "kiss-1720537137548.jpg",
+        "like": 0,
+        "view": 0,
+        "url": "ArtemasILikeTheWayYouKissMe-1720537131658.mp3",
+        "user": "668cf8ff5e7d98319807efcf",
+        "genre": "668d4767aac7e1fbdc5b0fc9",
+        "createdBy": {
+            "_id": "668cf8ff5e7d98319807efcf",
+            "email": "user1@gmail.com",
+            "name": "I'm user 1"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2024-07-09T14:59:11.150Z",
+        "updatedAt": "2024-07-09T14:59:11.150Z",
+        "__v": 0
+    },
+    {
+        "_id": "668d5b24fec3c90e0cce16e0",
+        "title": "Kill Eva, ENCASSATOR - Psycho Dreams",
+        "description": "...",
+        "photo": "sexxy-1720539926472.jpg",
+        "like": 1,
+        "view": 1,
+        "url": "KillEva,ENCASSATOR-PsychoDreams-1720539920155.mp3",
+        "user": "668cf8ff5e7d98319807efcf",
+        "genre": "668d4767aac7e1fbdc5b0fc9",
+        "createdBy": {
+            "_id": "668cf8ff5e7d98319807efcf",
+            "email": "user1@gmail.com",
+            "name": "I'm user 1"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2024-07-09T15:45:40.635Z",
+        "updatedAt": "2024-07-09T15:56:42.252Z",
+        "__v": 0
+    },
+    {
+        "_id": "668d5c48fec3c90e0cce172c",
+        "title": "FLOKI, ЭВСЭ - Ворую",
+        "description": "...",
+        "photo": "flo-1720540203162.jpg",
+        "like": 0,
+        "view": 0,
+        "url": "FLOKI-1720540182288.mp3",
+        "user": "668cf8ff5e7d98319807efcf",
+        "genre": "668d4767aac7e1fbdc5b0fc9",
+        "createdBy": {
+            "_id": "668cf8ff5e7d98319807efcf",
+            "email": "user1@gmail.com",
+            "name": "I'm user 1"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2024-07-09T15:50:32.507Z",
+        "updatedAt": "2024-07-09T15:50:32.507Z",
+        "__v": 0
+    },
+    {
+        "_id": "668d5ceffec3c90e0cce1743",
+        "title": "Shugz - King Of My Castle",
+        "description": "...",
+        "photo": "cass-1720540398125.jpg",
+        "like": 0,
+        "view": 0,
+        "url": "Shugz-KingOfMyCastle-1720540374793.mp3",
+        "user": "668cf8ff5e7d98319807efcf",
+        "genre": "668d4767aac7e1fbdc5b0fc9",
+        "createdBy": {
+            "_id": "668cf8ff5e7d98319807efcf",
+            "email": "user1@gmail.com",
+            "name": "I'm user 1"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2024-07-09T15:53:19.554Z",
+        "updatedAt": "2024-07-09T15:53:19.554Z",
+        "__v": 0
+    },
+    {
+        "_id": "668d5d4ffec3c90e0cce175a",
+        "title": "The Living Tombstone - My Ordinary Life",
+        "description": "...",
+        "photo": "bear-1720540481962.jpg",
+        "like": 0,
+        "view": 0,
+        "url": "TheLivingTombstone-MyOrdinaryLife-1720540476126.mp3",
+        "user": "668cf8ff5e7d98319807efcf",
+        "genre": "668d4767aac7e1fbdc5b0fc9",
+        "createdBy": {
+            "_id": "668cf8ff5e7d98319807efcf",
+            "email": "user1@gmail.com",
+            "name": "I'm user 1"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2024-07-09T15:54:55.801Z",
+        "updatedAt": "2024-07-09T15:54:55.801Z",
+        "__v": 0
     }
 ]

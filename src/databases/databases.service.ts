@@ -53,6 +53,8 @@ export class DatabasesService implements OnModuleInit {
                         { apiPath: '/api/v1/playlists', method: 'POST' },
                         { apiPath: '/api/v1/playlists', method: 'GET' },
                         { apiPath: '/api/v1/playlists/:id', method: 'PATCH' },
+                        { apiPath: '/api/v1/followers/:id', method: 'GET' },
+                        { apiPath: '/api/v1/followers', method: 'POST' },
                     ]
 
                 }).select("_id");
@@ -90,6 +92,7 @@ export class DatabasesService implements OnModuleInit {
                         avatar: 'anh1-1720166965307.jpg'
                     },
                     {
+                        _id: "668cf8ff5e7d98319807efcf",
                         name: "I'm user 1",
                         email: "user1@gmail.com",
                         password: this.userService.getHashPassword(this.configService.get<string>('INIT_PASSWORD')),
@@ -101,6 +104,7 @@ export class DatabasesService implements OnModuleInit {
                         avatar: 'anh1-1720166965307.jpg'
                     },
                     {
+                        _id: "668e4c2cf538984a22937eea",
                         name: "I'm user 2",
                         email: "user2@gmail.com",
                         password: this.userService.getHashPassword(this.configService.get<string>('INIT_PASSWORD')),

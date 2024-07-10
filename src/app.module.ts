@@ -19,6 +19,7 @@ import { GenresModule } from './genres/genres.module';
 import { LikesModule } from './likes/likes.module';
 import { CommentsModule } from './comments/comments.module';
 import { PlaylistsModule } from './playlists/playlists.module';
+import { FollowersModule } from './followers/followers.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { PlaylistsModule } from './playlists/playlists.module';
     LikesModule,
     CommentsModule,
     PlaylistsModule,
+    FollowersModule,
   ],
 
   controllers: [AppController],

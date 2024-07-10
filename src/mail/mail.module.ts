@@ -1,13 +1,21 @@
 import { MailerModule } from "@nestjs-modules/mailer";
 import { Module } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MailController } from "./mail.controller";
 import { MailService } from "./mail.service";
 import { join } from "path";
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter'
+import { MongooseModule } from "@nestjs/mongoose";
+import { Follower, FollowerSchema } from "src/followers/schemas/follower.schema";
+import { Track, TrackSchema } from "src/tracks/schemas/track.schema";
 
 @Module({
   imports: [
+    MongooseModule.forFeature([
+      { name: Follower.name, schema: FollowerSchema },
+      { name: Track.name, schema: TrackSchema },
+    ]),
+    ConfigModule,
     MailerModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         transport: {
