@@ -55,11 +55,11 @@ export class AuthService {
         const a = await this.usersService.updateUserToken(refresh_token, _id);
 
         //set cookies for response
-        const cookieOptions: CookieOptions = {
-            httpOnly: true,
-            maxAge: ms(this.configService.get<string>('JWT_REFRESH_TOKEN_EXPIRE')),
-        }
-        response.cookie('refresh_token', refresh_token, cookieOptions);
+        // const cookieOptions: CookieOptions = {
+        //     httpOnly: true,
+        //     maxAge: ms(this.configService.get<string>('JWT_REFRESH_TOKEN_EXPIRE')),
+        // }
+        // response.cookie('refresh_token', refresh_token, cookieOptions);
 
         return {
             access_token: this.jwtService.sign(payload),
