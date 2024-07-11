@@ -14,6 +14,7 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { ConfigService } from '@nestjs/config';
 import { Role, RoleDocument } from 'src/roles/schemas/role.schema';
 import { USER_ROLE } from 'src/databases/init-data';
+import { join } from 'path';
 
 @Injectable()
 export class UsersService {
@@ -36,7 +37,7 @@ export class UsersService {
       await this.userModel.create(
         {
           ...createUserDto,
-          role: "ADMIN",
+          role: user?.role?._id,
           password: hashPassword,
           createdBy: {
             _id: user._id,
@@ -49,18 +50,25 @@ export class UsersService {
     return userResult;
   }
 
+
   async register(registerUserDto: RegisterUserDto) {
     const hashPassword = this.getHashPassword(registerUserDto.password);
-    const userRole: Role = await this.userModel.findOne({ name: USER_ROLE });
+    const userRole: Role = await this.roleModel.findOne({ name: USER_ROLE });
     const userResult = (
       await this.userModel.create({
         ...registerUserDto,
         password: hashPassword,
-        role: userRole._id
+        role: userRole?._id,
+        avatar: 'defaultuser.png',
+        name: registerUserDto?.email
       }
       )
     );
-    return userResult;
+    return {
+      _id: userResult?._id,
+      email: userResult?.email,
+      createdAt: userResult?.createdAt
+    };
   }
 
   async findAll(currentPage: number, limit: number, qs: string) {

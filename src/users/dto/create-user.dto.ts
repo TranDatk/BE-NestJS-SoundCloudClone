@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsMongoId, IsNotEmpty, IsNotEmptyObject, IsObject, IsString, ValidateNested } from 'class-validator';
+import { IsEmail, IsMongoId, IsNotEmpty, IsNotEmptyObject, IsObject, IsString, MaxLength, MinLength, ValidateNested } from 'class-validator';
 import mongoose from 'mongoose';
 import { IsUnique } from 'src/custom-decorators/unique.decorator';
 
@@ -11,13 +11,10 @@ export class CreateUserDto {
 
     phone: string;
 
-    @IsNotEmpty()
     password: string;
 
-    @IsNotEmpty()
     name: string;
 
-    @IsNotEmpty()
     gender: string;
 
     age: number;
@@ -47,8 +44,11 @@ export class UserLoginDto {
         description: 'username',
     })
     readonly username: string;
+
     @IsString()
     @IsNotEmpty()
+    @MinLength(4)
+    @MaxLength(20)
     @ApiProperty({
         example: '12345678',
         description: 'password',

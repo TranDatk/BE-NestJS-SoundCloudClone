@@ -80,7 +80,8 @@ export class AuthService {
 
         return {
             _id: newUser?._id,
-            createAt: newUser?.createdAt
+            createAt: newUser?.createdAt,
+            email: newUser?.email
         }
     }
 
