@@ -74,4 +74,9 @@ export class AuthController {
         return this.authService.loginWithGithub(githubUserDto);
     }
 
+    @Get('callback')
+    @UseGuards(AuthGuard('github'))
+    async authCallback(@User() user) {
+        return user;
+    }
 }
