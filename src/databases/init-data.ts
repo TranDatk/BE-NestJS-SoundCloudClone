@@ -1,6 +1,12 @@
 export const ADMIN_ROLE = "SUPER_ADMIN";
 export const USER_ROLE = "NORMAL_USER";
 
+export const enum USER_TYPE {
+    CREDENTIAL = "CREDENTIAL",
+    GITHUB = "GITHUB",
+    GOOGLE = 'GOOGLE'
+}
+
 export const INIT_PERMISSIONS = [
     {
         "_id": "648ab6d3fa16b294212e4033",

@@ -18,7 +18,7 @@ export class User {
     @Prop()
     avatar: string;
 
-    @Prop({ required: true })
+    @Prop()
     password: string;
 
     @Prop()
@@ -29,6 +29,9 @@ export class User {
 
     @Prop()
     age: number;
+
+    @Prop()
+    type: string;
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Role.name })
     role: mongoose.Schema.Types.ObjectId;

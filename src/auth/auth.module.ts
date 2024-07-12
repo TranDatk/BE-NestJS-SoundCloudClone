@@ -9,6 +9,7 @@ import { JwtStrategy } from './passport/jwt.strategy';
 import ms from 'ms'
 import { AuthController } from './auth.controller';
 import { RolesModule } from 'src/roles/roles.module';
+import { GithubStrategy } from './passport/github.strategy';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { RolesModule } from 'src/roles/roles.module';
     ConfigModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, GithubStrategy],
   exports: [AuthService],
 })
 export class AuthModule { }

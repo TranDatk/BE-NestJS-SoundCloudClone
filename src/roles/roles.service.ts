@@ -72,6 +72,17 @@ export class RolesService {
       return null;
   }
 
+  async findByName(name: string) {
+    const result: Role = await this.roleModel.findOne({ name: name }).populate({
+      path: "permissions",
+      select: { _id: 1, apiPath: 1, name: 1, method: 1, module: 1 }
+    });
+    if (result) {
+      return result;
+    } else
+      return null;
+  }
+
   async update(id: string, updateRoleDto: UpdateRoleDto, user: IUser) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new InvalidIdException(id);

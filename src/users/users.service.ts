@@ -13,8 +13,9 @@ import { IUser } from './users.interface';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { ConfigService } from '@nestjs/config';
 import { Role, RoleDocument } from 'src/roles/schemas/role.schema';
-import { USER_ROLE } from 'src/databases/init-data';
+import { USER_ROLE, USER_TYPE } from 'src/databases/init-data';
 import { join } from 'path';
+import { GithubUserDto } from './dto/github-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -39,6 +40,7 @@ export class UsersService {
           ...createUserDto,
           role: user?.role?._id,
           password: hashPassword,
+          type: USER_TYPE.CREDENTIAL,
           createdBy: {
             _id: user._id,
             email: user.email,
@@ -52,7 +54,7 @@ export class UsersService {
 
 
   async register(registerUserDto: RegisterUserDto) {
-    const hashPassword = this.getHashPassword(registerUserDto.password);
+    const hashPassword = this.getHashPassword(registerUserDto?.password);
     const userRole: Role = await this.roleModel.findOne({ name: USER_ROLE });
     const userResult = (
       await this.userModel.create({
@@ -60,7 +62,8 @@ export class UsersService {
         password: hashPassword,
         role: userRole?._id,
         avatar: 'defaultuser.png',
-        name: registerUserDto?.email
+        name: registerUserDto?.email,
+        type: USER_TYPE.CREDENTIAL
       }
       )
     );
@@ -70,6 +73,29 @@ export class UsersService {
       createdAt: userResult?.createdAt
     };
   }
+
+  async registerGithubAccount(registerUserDto: GithubUserDto) {
+    const userRole: Role = (await this.roleModel.findOne({ name: USER_ROLE }));
+    const userResult = (
+      await this.userModel.create({
+        email: registerUserDto?.email,
+        role: userRole?._id,
+        avatar: registerUserDto?.image,
+        name: registerUserDto?.name,
+        type: USER_TYPE.GITHUB
+      }
+      )
+    );
+    return {
+      _id: userResult?._id,
+      email: userResult?.email,
+      role: { _id: userRole?._id, name: userRole?.name },
+      avatar: userResult?.avatar,
+      name: userResult?.name,
+      type: userResult?.type
+    };
+  }
+
 
   async findAll(currentPage: number, limit: number, qs: string) {
     const { filter, skip, sort, projection, population } = aqp(qs);
@@ -121,7 +147,7 @@ export class UsersService {
   async findOneByUsername(username: string): Promise<User> {
     const user = await this.userModel.findOne({
       email: username
-    }).populate({ path: "role", select: { name: 1 } });
+    }).populate({ path: "role", select: { name: 1, _id: 1 } });
 
     return user;
   }

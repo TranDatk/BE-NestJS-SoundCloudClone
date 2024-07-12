@@ -34,8 +34,8 @@ export class LikesController {
 
   @ResponseMessage('Check is user liked the track')
   @Get('check/:id')
-  checkTrackLike(@Param('id') trackId: string) {
-    return this.likesService.checkTrackLike(trackId);
+  checkTrackLike(@Param('id') trackId: string, @User() user: IUser) {
+    return this.likesService.checkTrackLike(trackId, user);
   }
 
   @Patch(':id')

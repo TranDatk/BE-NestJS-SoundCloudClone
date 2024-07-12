@@ -98,12 +98,12 @@ export class LikesService {
     return await this.likeModel.findById(id);
   }
 
-  async checkTrackLike(trackId: string) {
+  async checkTrackLike(trackId: string, user: IUser) {
     if (!mongoose.Types.ObjectId.isValid(trackId)) {
       throw new InvalidIdException(trackId);
     }
 
-    const like = await this.likeModel.findOne({ track: trackId });
+    const like = await this.likeModel.findOne({ track: trackId, user: user?._id });
     if (like) {
       return like
     } else {

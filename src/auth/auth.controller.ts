@@ -11,6 +11,9 @@ import { RolesService } from 'src/roles/roles.service';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { UserLoginDto } from 'src/users/dto/create-user.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { GithubUserDto } from 'src/users/dto/github-user.dto';
+import { JwtDto } from './dto/jwt.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -51,10 +54,9 @@ export class AuthController {
 
     @Public()
     @ResponseMessage('Get user by refresh token')
-    @Get('/refresh')
-    handleRefreshToken(@Req() req: Request, @Res({ passthrough: true }) response: Response) {
-        const refreshToken = req.cookies['refresh_token'];
-        return this.authService.processNewToken(refreshToken, response);
+    @Post('/refresh')
+    handleRefreshToken(@Body() jwt: JwtDto, @Res({ passthrough: true }) response: Response) {
+        return this.authService.processNewToken(jwt, response);
     }
 
     @ResponseMessage('Logout user')
@@ -64,4 +66,12 @@ export class AuthController {
         @Res({ passthrough: true }) response: Response) {
         return this.authService.logout(user, response);
     }
+
+    @ResponseMessage('Login with github')
+    @Public()
+    @Post('/github')
+    loginWithGithub(@Body() githubUserDto: GithubUserDto) {
+        return this.authService.loginWithGithub(githubUserDto);
+    }
+
 }

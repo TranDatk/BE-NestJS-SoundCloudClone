@@ -89,6 +89,7 @@ export class DatabasesService implements OnModuleInit {
                         address: "VietNam",
                         role: adminRole._id,
                         refreshToken: null,
+                        type: "CREDENTIAL",
                         avatar: 'anh1-1720166965307.jpg'
                     },
                     {
@@ -101,6 +102,7 @@ export class DatabasesService implements OnModuleInit {
                         address: "VietNam",
                         role: userRole._id,
                         refreshToken: null,
+                        type: "CREDENTIAL",
                         avatar: 'anh1-1720166965307.jpg'
                     },
                     {
@@ -113,6 +115,7 @@ export class DatabasesService implements OnModuleInit {
                         address: "VietNam",
                         role: userRole._id,
                         refreshToken: null,
+                        type: "CREDENTIAL",
                         avatar: 'anh1-1720166965307.jpg'
                     },
                 ]);

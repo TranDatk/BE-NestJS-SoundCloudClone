@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { JwtService, JwtSignOptions, JwtVerifyOptions } from '@nestjs/jwt';
 import { IUser } from 'src/users/users.interface';
@@ -10,6 +10,9 @@ import { JWTUnauthorizedException } from 'src/exceptions/jwt.unauthorized.except
 import { NotFoundException } from 'src/exceptions/not-found.exception';
 import { User } from 'src/users/schemas/user.schema';
 import { RolesService } from 'src/roles/roles.service';
+import { GithubUserDto } from 'src/users/dto/github-user.dto';
+import { USER_ROLE } from 'src/databases/init-data';
+import { JwtDto } from './dto/jwt.dto';
 
 @Injectable()
 export class AuthService {
@@ -38,7 +41,7 @@ export class AuthService {
     }
 
     async login(user: IUser, response: Response) {
-        const { _id, name, email, role, permissions, avatar } = user;
+        const { _id, name, email, role, type, avatar } = user;
         const payload = {
             sub: "Token login",
             iss: "From server",
@@ -46,7 +49,8 @@ export class AuthService {
             name,
             email,
             role,
-            avatar
+            avatar,
+            type
         };
 
         const refresh_token = this.createRefreshToken(payload);
@@ -70,9 +74,62 @@ export class AuthService {
                 email,
                 role,
                 avatar,
-                permissions
+                type
             }
         };
+    }
+
+    async loginWithGithub(githubUserDto: GithubUserDto) {
+        const checkUser = await this.usersService.findOneByUsername(githubUserDto?.email);
+        if (!checkUser) {
+            const newUser = await this.usersService.registerGithubAccount(githubUserDto);
+            const payload = {
+                sub: "Token login",
+                iss: "From server",
+                _id: newUser?._id,
+                name: newUser?.name,
+                email: newUser?.email,
+                role: newUser?.role,
+                avatar: newUser?.avatar
+            };
+
+            const refresh_token = this.createRefreshToken(payload);
+            const a = await this.usersService.updateUserToken(refresh_token, newUser?._id as unknown as string);
+
+            return {
+                access_token: this.jwtService.sign(payload),
+                refresh_token: refresh_token,
+                user: {
+                    ...newUser
+                }
+            };
+        } else {
+            const role = await this.rolesService.findByName(USER_ROLE);
+            const payload = {
+                sub: "Token login",
+                iss: "From server",
+                _id: checkUser?._id,
+                name: checkUser?.name,
+                email: checkUser?.email,
+                role: { _id: role?._id, name: role?.name },
+                avatar: checkUser?.avatar
+            };
+
+            const refresh_token = this.createRefreshToken(payload);
+            const a = await this.usersService.updateUserToken(refresh_token, checkUser?._id as unknown as string);
+            return {
+                access_token: this.jwtService.sign(payload),
+                refresh_token: refresh_token,
+                user: {
+                    _id: checkUser?._id,
+                    name: checkUser?.name,
+                    email: checkUser?.email,
+                    role: role?._id,
+                    avatar: checkUser?.avatar,
+                    type: checkUser?.type
+                }
+            }
+        }
     }
 
     async register(user: RegisterUserDto) {
@@ -94,19 +151,19 @@ export class AuthService {
         return refreshToken;
     }
 
-    async processNewToken(refreshToken: string | undefined, response: Response) {
-        if (refreshToken === undefined) {
+    async processNewToken(jwt: JwtDto, response: Response) {
+
+        if (jwt?.refresh_token === undefined) {
             return new JWTUnauthorizedException();
         }
 
         try {
             const option: JwtVerifyOptions = {
                 secret: this.configService.get<string>('JWT_REFRESH_TOKEN_SECRET'),
-
             }
-            this.jwtService.verify(refreshToken, option);
+            this.jwtService.verify(jwt?.refresh_token, option);
 
-            const user = await this.usersService.findUserByToken(refreshToken);
+            const user = await this.usersService.findUserByToken(jwt?.refresh_token);
 
             //fetch user's role 
             const userRole = user.role as unknown as { _id: string };
@@ -117,8 +174,8 @@ export class AuthService {
                 name: user.name,
                 email: user.email,
                 role: user.role as any,
-                permissions: temp as any,
-                avatar: user.avatar
+                avatar: user.avatar,
+                type: user?.type
             }
             if (user) {
                 return this.login(parsingUser, response);
@@ -126,7 +183,7 @@ export class AuthService {
                 return new NotFoundException(User.name);
             }
         } catch (err) {
-            return new JWTUnauthorizedException();
+            return new UnauthorizedException(err?.message);
         }
     }
 
