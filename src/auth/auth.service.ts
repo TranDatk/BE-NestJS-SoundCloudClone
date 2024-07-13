@@ -79,7 +79,7 @@ export class AuthService {
         };
     }
 
-    async loginWithGithub(githubUserDto: GithubUserDto) {
+    async loginWithThirdParty(githubUserDto: GithubUserDto) {
         const checkUser = await this.usersService.findOneByUsername(githubUserDto?.email);
         if (!checkUser) {
             const newUser = await this.usersService.registerGithubAccount(githubUserDto);
@@ -90,7 +90,8 @@ export class AuthService {
                 name: newUser?.name,
                 email: newUser?.email,
                 role: newUser?.role,
-                avatar: newUser?.avatar
+                avatar: newUser?.avatar,
+                type: newUser?.type
             };
 
             const refresh_token = this.createRefreshToken(payload);
@@ -112,7 +113,8 @@ export class AuthService {
                 name: checkUser?.name,
                 email: checkUser?.email,
                 role: { _id: role?._id, name: role?.name },
-                avatar: checkUser?.avatar
+                avatar: checkUser?.avatar,
+                type: checkUser?.type
             };
 
             const refresh_token = this.createRefreshToken(payload);

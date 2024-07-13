@@ -67,11 +67,11 @@ export class AuthController {
         return this.authService.logout(user, response);
     }
 
-    @ResponseMessage('Login with github')
+    @ResponseMessage('Login with third party')
     @Public()
-    @Post('/github')
-    loginWithGithub(@Body() githubUserDto: GithubUserDto) {
-        return this.authService.loginWithGithub(githubUserDto);
+    @Post('/social-media')
+    loginWithThirdParty(@Body() githubUserDto: GithubUserDto) {
+        return this.authService.loginWithThirdParty(githubUserDto);
     }
 
     @Get('callback')

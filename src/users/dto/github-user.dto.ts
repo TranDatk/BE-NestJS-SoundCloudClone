@@ -13,5 +13,8 @@ export class GithubUserDto {
 
     @IsNotEmpty()
     name: string;
+
+    @IsNotEmpty()
+    type: string;
 }
 

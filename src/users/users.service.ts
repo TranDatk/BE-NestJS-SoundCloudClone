@@ -82,7 +82,7 @@ export class UsersService {
         role: userRole?._id,
         avatar: registerUserDto?.image,
         name: registerUserDto?.name,
-        type: USER_TYPE.GITHUB
+        type: registerUserDto?.type
       }
       )
     );
