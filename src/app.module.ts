@@ -20,6 +20,7 @@ import { LikesModule } from './likes/likes.module';
 import { CommentsModule } from './comments/comments.module';
 import { PlaylistsModule } from './playlists/playlists.module';
 import { FollowersModule } from './followers/followers.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { FollowersModule } from './followers/followers.module';
     CommentsModule,
     PlaylistsModule,
     FollowersModule,
+    PaymentModule,
   ],
 
   controllers: [AppController],
