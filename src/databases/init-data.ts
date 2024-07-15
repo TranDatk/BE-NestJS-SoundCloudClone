@@ -7,6 +7,12 @@ export const enum USER_TYPE {
     GOOGLE = 'GOOGLE'
 }
 
+export const enum STATUS {
+    PENDING = "PENDING",
+    CANCELED = "CANCELLED",
+    PAID = "PAID",
+}
+
 export const INIT_PERMISSIONS = [
     {
         "_id": "648ab6d3fa16b294212e4033",
@@ -612,6 +618,96 @@ export const INIT_PERMISSIONS = [
         "module": "FOLLOWERS",
         "createdBy": {
             "_id": "6684c50ca995464eae29594b",
+            "email": "admin@gmail.com"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2023-06-15T06:59:31.898Z",
+        "updatedAt": "2023-06-15T06:59:31.898Z",
+        "__v": 0
+    },
+    {
+        "name": "Create a payment",
+        "apiPath": "/api/v1/payment/create",
+        "method": "POST",
+        "module": "PAYMENT",
+        "createdBy": {
+            "_id": "647b5108a8a243e8191855b5",
+            "email": "admin@gmail.com"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2023-06-15T06:59:31.898Z",
+        "updatedAt": "2023-06-15T06:59:31.898Z",
+        "__v": 0
+    },
+    {
+        "name": "Get a order",
+        "apiPath": "/api/v1/payment/:orderId",
+        "method": "GET",
+        "module": "PAYMENT",
+        "createdBy": {
+            "_id": "647b5108a8a243e8191855b5",
+            "email": "admin@gmail.com"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2023-06-15T06:59:31.898Z",
+        "updatedAt": "2023-06-15T06:59:31.898Z",
+        "__v": 0
+    },
+    {
+        "name": "Cancel a order",
+        "apiPath": "/api/v1/payment/:orderId",
+        "method": "PUT",
+        "module": "PAYMENT",
+        "createdBy": {
+            "_id": "647b5108a8a243e8191855b5",
+            "email": "admin@gmail.com"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2023-06-15T06:59:31.898Z",
+        "updatedAt": "2023-06-15T06:59:31.898Z",
+        "__v": 0
+    },
+    {
+        "name": "Confirm webhook",
+        "apiPath": "/api/v1/payment/confirm-webhook",
+        "method": "POST",
+        "module": "PAYMENT",
+        "createdBy": {
+            "_id": "647b5108a8a243e8191855b5",
+            "email": "admin@gmail.com"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2023-06-15T06:59:31.898Z",
+        "updatedAt": "2023-06-15T06:59:31.898Z",
+        "__v": 0
+    },
+    {
+        "name": "Receive webhook",
+        "apiPath": "/api/v1/payment/receive-webhook",
+        "method": "POST",
+        "module": "PAYMENT",
+        "createdBy": {
+            "_id": "647b5108a8a243e8191855b5",
+            "email": "admin@gmail.com"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2023-06-15T06:59:31.898Z",
+        "updatedAt": "2023-06-15T06:59:31.898Z",
+        "__v": 0
+    },
+    {
+        "name": "Check is prenium",
+        "apiPath": "/api/v1/payment/check/:orderId",
+        "method": "GET",
+        "module": "PAYMENT",
+        "createdBy": {
+            "_id": "647b5108a8a243e8191855b5",
             "email": "admin@gmail.com"
         },
         "isDeleted": false,

@@ -2,29 +2,24 @@ import { BadRequestException, Inject, Injectable, NotFoundException } from '@nes
 import { ConfigService } from '@nestjs/config';
 import PayOS from '@payos/node';
 import crypto from 'crypto';
+import { WebhookResponseDto } from './dto/webhook-response.dto';
+import { IUser } from 'src/users/users.interface';
+import { generateOrderCode, isValidData } from './utils/is.validate';
+import { InjectModel } from '@nestjs/mongoose';
+import { Payment, PaymentDocument } from './schemas/payment.schema';
+import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
+import { STATUS } from 'src/databases/init-data';
 
 @Injectable()
 export class PaymentService {
     constructor(
         @Inject('PAYOS') private readonly payOS: PayOS,
+        @InjectModel(Payment.name) private paymentModel: SoftDeleteModel<PaymentDocument>,
         private configService: ConfigService
     ) { }
 
-    createPaymentSignature(amount: string, cancelUrl: string, description: string, orderCode: string, returnUrl: string): string {
-        const data = `amount=${amount}&cancelUrl=${cancelUrl}&description=${description}&orderCode=${orderCode}&returnUrl=${returnUrl}`;
-        return createSignature(data, this.configService.get<string>('PAYOS_CHECKSUM_KEY'));
-    }
-
-    async createPaymentLink(body) {
-        const orderCode = Number(String(new Date().getTime()).slice(-6));
-
-        const signature = this.createPaymentSignature(
-            body?.amount,
-            body.cancelUrl,
-            body?.description,
-            (orderCode).toString(),
-            body?.returnUrl
-        );
+    async createPaymentLink(body, user: IUser) {
+        const orderCode = generateOrderCode();
 
         const orderBody = {
             orderCode: orderCode,
@@ -32,23 +27,26 @@ export class PaymentService {
             description: body?.description,
             cancelUrl: body?.cancelUrl,
             returnUrl: body?.returnUrl,
-            signature: signature
         };
 
         try {
             const paymentLinkRes = await this.payOS.createPaymentLink(orderBody);
-            return {
-                infor: {
-                    bin: paymentLinkRes?.bin,
-                    checkoutUrl: paymentLinkRes?.checkoutUrl,
-                    accountNumber: paymentLinkRes?.accountNumber,
-                    accountName: paymentLinkRes?.accountName,
-                    amount: paymentLinkRes?.amount,
-                    description: paymentLinkRes?.description,
+            if (paymentLinkRes?.orderCode) {
+                await this.paymentModel.create({
                     orderCode: paymentLinkRes?.orderCode,
-                    qrCode: paymentLinkRes?.qrCode,
-                },
-                signature: signature
+                    user: user?._id,
+                    status: STATUS.PENDING
+                });
+            }
+            return {
+                bin: paymentLinkRes?.bin,
+                checkoutUrl: paymentLinkRes?.checkoutUrl,
+                accountNumber: paymentLinkRes?.accountNumber,
+                accountName: paymentLinkRes?.accountName,
+                amount: paymentLinkRes?.amount,
+                description: paymentLinkRes?.description,
+                orderCode: paymentLinkRes?.orderCode,
+                qrCode: paymentLinkRes?.qrCode,
             };
         } catch (error) {
             throw new BadRequestException(error?.message)
@@ -61,34 +59,69 @@ export class PaymentService {
             if (!order) {
                 throw new NotFoundException('Not found');
             }
-            return { order: order };
+            return order;
         } catch (error) {
             throw new BadRequestException(error?.message);
         }
     }
 
-    cancelPaymentLink(orderId, cancellationReason) {
+    async cancelPaymentLink(orderId, cancellationReason, user: IUser) {
         try {
-            const order = this.payOS.cancelPaymentLink(orderId, cancellationReason);
+            const order = await this.payOS.cancelPaymentLink(orderId, cancellationReason);
             if (!order) {
                 throw new NotFoundException('Not found');
             }
-            return { order: order };
+            const payment = await this.paymentModel.findOneAndUpdate({
+                orderCode: orderId,
+                status: STATUS.PENDING,
+                user: user?._id
+            }, { status: STATUS.CANCELED });
+            await this.paymentModel.softDelete({ _id: payment?._id })
+
+            return order;
         } catch (error) {
             throw new BadRequestException(error?.message);
         }
     }
 
-    confirmWebhook(webhookUrl) {
+    async confirmWebhook(webhookUrl) {
         try {
-            this.payOS.confirmWebhook(webhookUrl);
+            await this.payOS.confirmWebhook(webhookUrl);
             return null;
         } catch (error) {
             throw new BadRequestException(error?.message);
         }
     }
+
+    async receiveWebhook(data: WebhookResponseDto) {
+        try {
+            if (isValidData(data?.data, data?.signature, this.configService.get<string>('PAYOS_CHECKSUM_KEY'))) {
+                const payment = await this.paymentModel.findOneAndUpdate({
+                    orderCode: data?.data?.orderCode,
+                    status: STATUS.PENDING
+                }, {
+                    status: STATUS.PAID
+                });
+                await this.paymentModel.softDelete({ _id: payment?._id })
+            }
+            else {
+                throw new BadRequestException('The data does not match the signature')
+            }
+        } catch (error) {
+            throw new BadRequestException(error?.message);
+        }
+    }
+
+    async checkPayment(orderId, user: IUser) {
+        const payment = await this.paymentModel.findOne({
+            orderCode: orderId,
+            user: user?._id
+        });
+        if (payment?.status === STATUS.PAID) {
+            return { paymentCompleted: true }
+        } else {
+            return { paymentCompleted: false }
+        }
+    }
 }
 
-function createSignature(data: string, secretKey: string): string {
-    return crypto.createHmac('sha256', secretKey).update(data).digest('hex');
-}

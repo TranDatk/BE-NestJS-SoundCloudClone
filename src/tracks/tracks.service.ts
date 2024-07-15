@@ -18,7 +18,6 @@ export class TracksService {
   constructor(
     @InjectModel(Track.name) private trackModel: SoftDeleteModel<TrackDocument>,
     @InjectModel(Genre.name) private genreModel: SoftDeleteModel<GenreDocument>,
-    private configService: ConfigService
   ) { }
 
   async create(createTrackDto: CreateTrackDto, user: IUser) {
