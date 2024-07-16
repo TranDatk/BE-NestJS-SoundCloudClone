@@ -143,29 +143,35 @@ export class AuthService {
     }
 
     async register(user: RegisterUserDto) {
-        const newUser = await this.usersService.register(user);
-        const verify = await this.verifyModel.create({
-            code: generateRandomSixDigitString(),
-            user: newUser?._id,
-            email: newUser?.email
-        });
-        if (verify) {
-            this.mailerService.sendMail({
-                to: newUser?.email,
-                from: '"Sound Cloud Clone" <soundcloudclone@datk.com>', // override default from
-                subject: 'Verification Code',
-                template: 'verify',
-                context: {
-                    name: newUser?.email,
-                    verificationCode: verify?.code
-                }
-            })
+        try {
+            const newUser = await this.usersService.register(user);
+            const verify = await this.verifyModel.create({
+                code: generateRandomSixDigitString(),
+                user: newUser?._id,
+                email: newUser?.email
+            });
+            if (verify) {
+                this.mailerService.sendMail({
+                    to: newUser?.email,
+                    from: '"Sound Cloud Clone" <soundcloudclone@datk.com>', // override default from
+                    subject: 'Verification Code',
+                    template: 'verify',
+                    context: {
+                        name: newUser?.email,
+                        verificationCode: verify?.code
+                    }
+                })
+            }
+            return {
+                _id: newUser?._id,
+                createAt: newUser?.createdAt,
+                email: newUser?.email
+            }
+        } catch (error) {
+            throw new BadRequestException(error?.message);
         }
-        return {
-            _id: newUser?._id,
-            createAt: newUser?.createdAt,
-            email: newUser?.email
-        }
+
+
     }
 
     async resendTheCode(user: IUser) {
