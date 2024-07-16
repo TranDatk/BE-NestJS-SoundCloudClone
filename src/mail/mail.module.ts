@@ -39,6 +39,7 @@ import { Track, TrackSchema } from "src/tracks/schemas/track.schema";
     }),
   ],
   controllers: [MailController],
-  providers: [MailService]
+  providers: [MailService],
+  exports: [MailService]
 })
 export class MailModule { }

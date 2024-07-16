@@ -10,12 +10,16 @@ import ms from 'ms'
 import { AuthController } from './auth.controller';
 import { RolesModule } from 'src/roles/roles.module';
 import { GithubStrategy } from './passport/github.strategy';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Verify, VerifySchema } from './schemas/verify.schema';
+import { MailModule } from 'src/mail/mail.module';
 
 @Module({
   imports: [
     UsersModule,
     PassportModule,
     RolesModule,
+    MailModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -27,6 +31,9 @@ import { GithubStrategy } from './passport/github.strategy';
       inject: [ConfigService]
     }),
     ConfigModule,
+    MongooseModule.forFeature([
+      { name: Verify.name, schema: VerifySchema },
+    ]),
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy, GithubStrategy],

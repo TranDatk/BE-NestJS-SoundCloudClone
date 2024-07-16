@@ -79,4 +79,18 @@ export class AuthController {
     async authCallback(@User() user) {
         return user;
     }
+
+    @ResponseMessage('Check is verify user')
+    @Public()
+    @Post('/verify')
+    checkIsVerify(@Body() data) {
+        return this.authService.checkIsVerify(data);
+    }
+
+    @ResponseMessage('Check code verify user')
+    @Public()
+    @Post('/verify/code')
+    checkCode(@Body() codeAndEmail) {
+        return this.authService.checkCode(codeAndEmail);
+    }
 }

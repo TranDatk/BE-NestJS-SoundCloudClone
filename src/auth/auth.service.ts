@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { JwtService, JwtSignOptions, JwtVerifyOptions } from '@nestjs/jwt';
 import { IUser } from 'src/users/users.interface';
@@ -13,14 +13,22 @@ import { RolesService } from 'src/roles/roles.service';
 import { GithubUserDto } from 'src/users/dto/github-user.dto';
 import { USER_ROLE } from 'src/databases/init-data';
 import { JwtDto } from './dto/jwt.dto';
+import { Verify, VerifyDocument } from './schemas/verify.schema';
+import { Model } from 'mongoose';
+import { generateRandomSixDigitString } from './utils/generate.random';
+import { MailService } from 'src/mail/mail.service';
+import { MailerService } from '@nestjs-modules/mailer';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class AuthService {
     constructor(
         private usersService: UsersService,
+        private mailerService: MailerService,
         private jwtService: JwtService,
         private configService: ConfigService,
         private rolesService: RolesService,
+        @InjectModel(Verify.name) private verifyModel: Model<VerifyDocument>,
     ) { }
 
     async validateUser(username: string, pass: string): Promise<any> {
@@ -136,12 +144,57 @@ export class AuthService {
 
     async register(user: RegisterUserDto) {
         const newUser = await this.usersService.register(user);
-
+        const verify = await this.verifyModel.create({
+            code: generateRandomSixDigitString(),
+            user: newUser?._id,
+            email: newUser?.email
+        });
+        if (verify) {
+            this.mailerService.sendMail({
+                to: newUser?.email,
+                from: '"Sound Cloud Clone" <soundcloudclone@datk.com>', // override default from
+                subject: 'Verification Code',
+                template: 'verify',
+                context: {
+                    name: newUser?.email,
+                    verificationCode: verify?.code
+                }
+            })
+        }
         return {
             _id: newUser?._id,
             createAt: newUser?.createdAt,
             email: newUser?.email
         }
+    }
+
+    async checkIsVerify(data) {
+        const { email } = data;
+        const verify = await this.verifyModel.findOne({ email: email });
+        if (verify) {
+            return { isVerify: false }
+        }
+        return { isVerify: true }
+    }
+
+    async checkCode(codeAndEmail) {
+        const { code, email } = codeAndEmail;
+        const verify = await this.verifyModel.findOne({ email: email, code: code }).sort({ createdAt: -1 });
+        if (verify) {
+            const currentTime = new Date();
+            const codeCreatedTime = new Date(verify.createdAt);
+            const timeDifference = (currentTime.getTime() - codeCreatedTime.getTime()) / 1000 / 60; // Chuyển đổi từ milliseconds sang minutes
+
+            if (timeDifference < 5) {
+                await this.verifyModel.deleteMany({ _id: verify?._id });
+                return { isVerify: true, message: 'Valid code' }; // Mã xác nhận hợp lệ
+            } else {
+                await this.verifyModel.deleteOne({ _id: verify?._id });
+                return { isVerify: false, message: 'Verification code has expired' }; // Mã xác nhận đã hết hạn
+            }
+        }
+
+        return { isVerify: false, message: 'Invalid verification code' }; // Mã xác nhận không tồn tại
     }
 
     createRefreshToken = (payload) => {
