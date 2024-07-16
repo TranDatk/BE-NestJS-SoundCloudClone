@@ -1,4 +1,4 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { JwtService, JwtSignOptions, JwtVerifyOptions } from '@nestjs/jwt';
 import { IUser } from 'src/users/users.interface';
@@ -168,6 +168,35 @@ export class AuthService {
         }
     }
 
+    async resendTheCode(user: IUser) {
+        const u = await this.usersService.findOneByUsername(user?.email);
+        if (u) {
+            await this.verifyModel.deleteMany({ email: user?.email });
+            const verify = await this.verifyModel.create({
+                code: generateRandomSixDigitString(),
+                user: u?._id,
+                email: u?.email
+            });
+            if (verify) {
+                this.mailerService.sendMail({
+                    to: u?.email,
+                    from: '"Sound Cloud Clone" <soundcloudclone@datk.com>', // override default from
+                    subject: 'Verification Code',
+                    template: 'verify',
+                    context: {
+                        name: u?.email,
+                        verificationCode: verify?.code
+                    }
+                });
+                return { isVerify: false }
+            } else {
+                throw new BadRequestException('Email sending has temporarily failed');
+            }
+        } else {
+            throw new BadRequestException('Email does not exist');
+        }
+    }
+
     async checkIsVerify(data) {
         const { email } = data;
         const verify = await this.verifyModel.findOne({ email: email });
@@ -177,9 +206,9 @@ export class AuthService {
         return { isVerify: true }
     }
 
-    async checkCode(codeAndEmail) {
-        const { code, email } = codeAndEmail;
-        const verify = await this.verifyModel.findOne({ email: email, code: code }).sort({ createdAt: -1 });
+    async checkCode(data, user: IUser) {
+        const { code } = data;
+        const verify = await this.verifyModel.findOne({ email: user?.email, code: code }).sort({ createdAt: -1 });
         if (verify) {
             const currentTime = new Date();
             const codeCreatedTime = new Date(verify.createdAt);

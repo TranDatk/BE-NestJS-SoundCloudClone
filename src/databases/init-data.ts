@@ -716,6 +716,51 @@ export const INIT_PERMISSIONS = [
         "updatedAt": "2023-06-15T06:59:31.898Z",
         "__v": 0
     },
+    {
+        "name": "Logout User",
+        "apiPath": "/api/v1/auth/logout",
+        "method": "POST",
+        "module": "AUTH",
+        "createdBy": {
+            "_id": "647b5108a8a243e8191855b5",
+            "email": "admin@gmail.com"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2023-06-15T06:59:31.898Z",
+        "updatedAt": "2023-06-15T06:59:31.898Z",
+        "__v": 0
+    },
+    {
+        "name": "Check code verify user",
+        "apiPath": "/api/v1/auth/verify/code",
+        "method": "POST",
+        "module": "AUTH",
+        "createdBy": {
+            "_id": "647b5108a8a243e8191855b5",
+            "email": "admin@gmail.com"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2023-06-15T06:59:31.898Z",
+        "updatedAt": "2023-06-15T06:59:31.898Z",
+        "__v": 0
+    },
+    {
+        "name": "Resend the verification code",
+        "apiPath": "/api/v1/auth/resend",
+        "method": "GET",
+        "module": "AUTH",
+        "createdBy": {
+            "_id": "647b5108a8a243e8191855b5",
+            "email": "admin@gmail.com"
+        },
+        "isDeleted": false,
+        "deletedAt": null,
+        "createdAt": "2023-06-15T06:59:31.898Z",
+        "updatedAt": "2023-06-15T06:59:31.898Z",
+        "__v": 0
+    },
 ]
 
 export const INIT_GENRES = [

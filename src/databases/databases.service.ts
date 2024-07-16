@@ -58,6 +58,8 @@ export class DatabasesService implements OnModuleInit {
                         { apiPath: '/api/v1/payment/create', method: 'POST' },
                         { apiPath: '/api/v1/payment/:orderId', method: 'PUT' },
                         { apiPath: '/api/v1/payment/check/:orderId', method: 'GET' },
+                        { apiPath: '/api/v1/auth/resend', method: 'POST' },
+                        { apiPath: '/api/v1/auth/verify/code', method: 'GET' },
                     ]
 
                 }).select("_id");

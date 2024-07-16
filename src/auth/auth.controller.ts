@@ -88,9 +88,14 @@ export class AuthController {
     }
 
     @ResponseMessage('Check code verify user')
-    @Public()
     @Post('/verify/code')
-    checkCode(@Body() codeAndEmail) {
-        return this.authService.checkCode(codeAndEmail);
+    checkCode(@Body() data, @User() user: IUser) {
+        return this.authService.checkCode(data, user);
+    }
+
+    @ResponseMessage('Resend the verification code')
+    @Get('/resend')
+    resendTheCode(@User() user: IUser) {
+        return this.authService.resendTheCode(user);
     }
 }
