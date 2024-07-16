@@ -67,17 +67,20 @@ export class PaymentService {
 
     async cancelPaymentLink(orderId, cancellationReason, user: IUser) {
         try {
-            const order = await this.payOS.cancelPaymentLink(orderId, cancellationReason);
-            if (!order) {
-                throw new NotFoundException('Not found');
-            }
             const payment = await this.paymentModel.findOneAndUpdate({
                 orderCode: orderId,
                 status: STATUS.PENDING,
                 user: user?._id
             }, { status: STATUS.CANCELED });
-            await this.paymentModel.softDelete({ _id: payment?._id })
+            if (!payment) {
+                throw new NotFoundException('Not found');
+            }
+            await this.paymentModel.softDelete({ _id: payment?._id });
 
+            const order = await this.payOS.cancelPaymentLink(orderId, cancellationReason);
+            if (!order) {
+                throw new NotFoundException('Not found');
+            }
             return order;
         } catch (error) {
             throw new BadRequestException(error?.message);
