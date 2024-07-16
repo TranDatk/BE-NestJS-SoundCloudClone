@@ -112,15 +112,19 @@ export class PaymentService {
         }
     }
 
-    async checkPayment(orderId, user: IUser) {
-        const payment = await this.paymentModel.findOne({
-            orderCode: orderId,
-            user: user?._id
-        });
-        if (payment?.status === STATUS.PAID) {
-            return { paymentCompleted: true }
+    async checkPayment(user: IUser, orderId?: string | null,) {
+        if (orderId) {
+            const payment = await this.paymentModel.findOne({
+                orderCode: orderId,
+                user: user?._id
+            });
+            return payment;
         } else {
-            return { paymentCompleted: false }
+            const payment = await this.paymentModel.findOne({
+                status: STATUS.PAID,
+                user: user?._id
+            });
+            return payment;
         }
     }
 }

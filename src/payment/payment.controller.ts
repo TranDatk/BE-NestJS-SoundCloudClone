@@ -48,6 +48,6 @@ export class PaymentController {
   @ResponseMessage('Check is prenium')
   @Get('/check/:orderId')
   checkPayment(@Param('orderId') orderId: string, @User() user: IUser) {
-    return this.paymentService.checkPayment(orderId, user);
+    return this.paymentService.checkPayment(user, orderId);
   }
 }
