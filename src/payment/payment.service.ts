@@ -112,8 +112,8 @@ export class PaymentService {
         }
     }
 
-    async checkPayment(user: IUser, orderId?: string | null,) {
-        if (orderId) {
+    async checkPayment(user: IUser, orderId?: number) {
+        if (orderId !== -1) {
             const payment = await this.paymentModel.findOne({
                 orderCode: orderId,
                 user: user?._id
