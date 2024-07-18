@@ -50,7 +50,8 @@ export class AuthService {
 
     async login(user: IUser, response: Response) {
         const { _id, name, email, role, type, avatar } = user;
-        const isVerify = this.checkIsVerify({ email });
+        const isVerify = await this.checkIsVerify({ email });
+        console.log(isVerify);
         const payload = {
             sub: "Token login",
             iss: "From server",
@@ -84,7 +85,7 @@ export class AuthService {
                 role,
                 avatar,
                 type,
-                isVerify
+                ...isVerify
             }
         };
     }
