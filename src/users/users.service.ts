@@ -15,7 +15,7 @@ import { ConfigService } from '@nestjs/config';
 import { Role, RoleDocument } from 'src/roles/schemas/role.schema';
 import { USER_ROLE, USER_TYPE } from 'src/databases/init-data';
 import { join } from 'path';
-import { GithubUserDto } from './dto/github-user.dto';
+import { SocialUserDto } from './dto/github-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -74,7 +74,7 @@ export class UsersService {
     };
   }
 
-  async registerGithubAccount(registerUserDto: GithubUserDto) {
+  async registerGithubAccount(registerUserDto: SocialUserDto) {
     const userRole: Role = (await this.roleModel.findOne({ name: USER_ROLE }));
     const userResult = (
       await this.userModel.create({

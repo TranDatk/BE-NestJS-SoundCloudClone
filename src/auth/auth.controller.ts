@@ -12,7 +12,7 @@ import { ThrottlerGuard } from '@nestjs/throttler';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { UserLoginDto } from 'src/users/dto/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { GithubUserDto } from 'src/users/dto/github-user.dto';
+import { SocialUserDto } from 'src/users/dto/github-user.dto';
 import { JwtDto } from './dto/jwt.dto';
 
 @ApiTags('auth')
@@ -70,8 +70,8 @@ export class AuthController {
     @ResponseMessage('Login with third party')
     @Public()
     @Post('/social-media')
-    loginWithThirdParty(@Body() githubUserDto: GithubUserDto) {
-        return this.authService.loginWithThirdParty(githubUserDto);
+    loginWithThirdParty(@Body() socialUserDto: SocialUserDto) {
+        return this.authService.loginWithThirdParty(socialUserDto);
     }
 
     @Get('callback')
@@ -87,7 +87,7 @@ export class AuthController {
         return this.authService.checkIsVerify(data);
     }
 
-    @ResponseMessage('Check code verify user')
+    @ResponseMessage('Check verification code')
     @Post('/verify/code')
     checkCode(@Body() data, @User() user: IUser) {
         return this.authService.checkCode(data, user);

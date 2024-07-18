@@ -7,7 +7,9 @@ import { User } from 'src/custom-decorators/parsing-user-decorator';
 import { IUser } from 'src/users/users.interface';
 import { Public } from 'src/custom-decorators/is-public-decorator';
 import { Response } from 'express';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('tracks')
 @Controller('tracks')
 export class TracksController {
   constructor(private readonly tracksService: TracksService) { }
@@ -71,7 +73,7 @@ export class TracksController {
     return this.tracksService.remove(id, user);
   }
 
-  @ResponseMessage('Get audio from id track')
+  @ResponseMessage('Get audio from track id')
   @Public()
   @Get('audio/:id')
   async getAudioById(@Param('id') trackId: string, @Res() res: Response) {

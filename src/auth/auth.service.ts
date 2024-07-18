@@ -10,7 +10,7 @@ import { JWTUnauthorizedException } from 'src/exceptions/jwt.unauthorized.except
 import { NotFoundException } from 'src/exceptions/not-found.exception';
 import { User } from 'src/users/schemas/user.schema';
 import { RolesService } from 'src/roles/roles.service';
-import { GithubUserDto } from 'src/users/dto/github-user.dto';
+import { SocialUserDto } from 'src/users/dto/github-user.dto';
 import { USER_ROLE } from 'src/databases/init-data';
 import { JwtDto } from './dto/jwt.dto';
 import { Verify, VerifyDocument } from './schemas/verify.schema';
@@ -89,10 +89,10 @@ export class AuthService {
         };
     }
 
-    async loginWithThirdParty(githubUserDto: GithubUserDto) {
-        const checkUser = await this.usersService.findOneByUsername(githubUserDto?.email);
+    async loginWithThirdParty(SocialUserDto: SocialUserDto) {
+        const checkUser = await this.usersService.findOneByUsername(SocialUserDto?.email);
         if (!checkUser) {
-            const newUser = await this.usersService.registerGithubAccount(githubUserDto);
+            const newUser = await this.usersService.registerGithubAccount(SocialUserDto);
             const payload = {
                 sub: "Token login",
                 iss: "From server",

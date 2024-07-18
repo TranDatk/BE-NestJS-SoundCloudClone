@@ -5,7 +5,9 @@ import { UpdatePlaylistDto } from './dto/update-playlist.dto';
 import { ResponseMessage } from 'src/custom-decorators/response-message-decorator';
 import { User } from 'src/custom-decorators/parsing-user-decorator';
 import { IUser } from 'src/users/users.interface';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('playlists')
 @Controller('playlists')
 export class PlaylistsController {
   constructor(private readonly playlistsService: PlaylistsService) { }

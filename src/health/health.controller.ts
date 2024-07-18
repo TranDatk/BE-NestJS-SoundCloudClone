@@ -2,7 +2,9 @@ import { Controller, Get, Logger } from "@nestjs/common";
 import { HealthCheck, HealthCheckService, MongooseHealthIndicator } from "@nestjs/terminus";
 import { Public } from "src/custom-decorators/is-public-decorator";
 import { Cron, CronExpression } from "@nestjs/schedule";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('permissions')
 @Controller('health')
 export class HealthController {
     constructor(

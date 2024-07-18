@@ -3,7 +3,7 @@ import { IsEmail, IsMongoId, IsNotEmpty, IsNotEmptyObject, IsObject, IsString, M
 import mongoose from 'mongoose';
 import { IsUnique } from 'src/custom-decorators/unique.decorator';
 
-export class GithubUserDto {
+export class SocialUserDto {
     @IsEmail()
     @IsNotEmpty()
     email: string;

@@ -6,7 +6,9 @@ import { ResponseMessage } from 'src/custom-decorators/response-message-decorato
 import { User } from 'src/custom-decorators/parsing-user-decorator';
 import { IUser } from 'src/users/users.interface';
 import { Public } from 'src/custom-decorators/is-public-decorator';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('genres')
 @Controller('genres')
 export class GenresController {
   constructor(private readonly genresService: GenresService) { }

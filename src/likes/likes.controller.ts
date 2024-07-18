@@ -5,7 +5,9 @@ import { UpdateLikeDto } from './dto/update-like.dto';
 import { ResponseMessage } from 'src/custom-decorators/response-message-decorator';
 import { User } from 'src/custom-decorators/parsing-user-decorator';
 import { IUser } from 'src/users/users.interface';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('likes')
 @Controller('likes')
 export class LikesController {
   constructor(private readonly likesService: LikesService) { }
@@ -32,7 +34,7 @@ export class LikesController {
     return this.likesService.findOne(id);
   }
 
-  @ResponseMessage('Check is user liked the track')
+  @ResponseMessage('Check if the user liked the track')
   @Get('check/:id')
   checkTrackLike(@Param('id') trackId: string, @User() user: IUser) {
     return this.likesService.checkTrackLike(trackId, user);

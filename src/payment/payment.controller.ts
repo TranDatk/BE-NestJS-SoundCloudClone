@@ -5,7 +5,9 @@ import { ResponseMessage } from 'src/custom-decorators/response-message-decorato
 import { WebhookResponseDto } from './dto/webhook-response.dto';
 import { User } from 'src/custom-decorators/parsing-user-decorator';
 import { IUser } from 'src/users/users.interface';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('payment')
 @Controller('payment')
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) { }

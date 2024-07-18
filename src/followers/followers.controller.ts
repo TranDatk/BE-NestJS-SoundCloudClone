@@ -5,12 +5,14 @@ import { UpdateFollowerDto } from './dto/update-follower.dto';
 import { ResponseMessage } from 'src/custom-decorators/response-message-decorator';
 import { User } from 'src/custom-decorators/parsing-user-decorator';
 import { IUser } from 'src/users/users.interface';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('followers')
 @Controller('followers')
 export class FollowersController {
   constructor(private readonly followersService: FollowersService) { }
 
-  @ResponseMessage('Create a new role')
+  @ResponseMessage('Create a new follower')
   @Post()
   create(@Body() createFollowerDto: CreateFollowerDto, @User() user: IUser) {
     return this.followersService.create(createFollowerDto, user);
