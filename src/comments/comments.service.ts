@@ -39,7 +39,7 @@ export class CommentsService {
       }).populate(
         {
           path: 'user',
-          select: { _id: 1, email: 1, avatar: 1, name: 1 }
+          select: { _id: 1, email: 1, avatar: 1, name: 1, type: 1 }
         });
     }
     throw new BadRequestException('The track ID is not found!');

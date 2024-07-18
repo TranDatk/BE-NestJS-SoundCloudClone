@@ -33,6 +33,9 @@ export class User {
     @Prop()
     type: string;
 
+    @Prop()
+    isVerify: boolean;
+
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Role.name })
     role: mongoose.Schema.Types.ObjectId;
 
