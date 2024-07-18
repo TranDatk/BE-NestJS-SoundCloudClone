@@ -1,8 +1,11 @@
 # SOUND CLOUD CLONE
 
 This project is a backend implementation for a Sound Cloud Clone, built using NestJS. The backend provides a range of functionalities, including authentication, user registration, email confirmation, payment integration, role-based access control, file uploads, and various APIs for Sound Cloud functionalities.
+You can use my Backend here: [https://soundcloudclone-nest.onrender.com/](https://soundcloudclone-nest.onrender.com/)
 
 ## Tech List
+![nest](https://res.cloudinary.com/dcyzg2k36/image/upload/v1721302282/nestjs_logo_icon_168087_wkjoa8.png)
+![ts](https://res.cloudinary.com/dcyzg2k36/image/upload/v1721302534/typescript_original_logo_icon_146317_izensp.png)
 
 - **NestJS**: A progressive Node.js framework for building efficient, reliable, and scalable server-side applications.
 - **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
@@ -54,7 +57,7 @@ This project is a backend implementation for a Sound Cloud Clone, built using Ne
       JWT_REFRESH_TOKEN_EXPIRE=1d
       
       #ADMIN EMAIL
-      ADMIN_EMAIL=admin@gmail.com
+      ADMIN_EMAIL=
       
       #FLAG TO AUTO GENERATE DATABASE
       SHOULD_INIT=true
@@ -100,7 +103,10 @@ This project is a backend implementation for a Sound Cloud Clone, built using Ne
 6. **File Upload**:
    - File upload functionality
 
-7. **Sound Cloud APIs**:
+7. **Cron job**:
+   - Automatically email tracks that users have followed
+
+8. **Sound Cloud APIs**:
    - Provide various APIs for Sound Cloud functionalities: Auth, User, Track, Like, Comment, Follow, Genre, Payment, Role, Permission, File. 
 
 ## Running the Application
@@ -125,13 +131,17 @@ This project is a backend implementation for a Sound Cloud Clone, built using Ne
 * POST api/v1/auth/register - Register a new user
 * GET api/v1/auth/refresh - Get user by refresh token
 * POST api/v1/auth/logout - Logout user
+* POST api/v1/auth/social-media - Login with third party
+* POST api/v1/auth/verify - Check is verify user
+* POST api/v1/auth/verify/code - Check verification code
+* GET api/v1/auth/resend - Resend the verification code
 
-3. File Uploads
-* POST /users/:id/upload - Upload a profile picture for a user
-* GET api/v1/files - Get all files
-* GET api/v1/files/:id - Get a files by ID
-* PATCH api/v1/files/:id - Update a files by ID
-* DELETE api/v1/files/:id - Delete a files by ID
+3. Payment
+* POST api/v1/payment/create - Create a payment
+* GET api/v1/payment/:orderId - Get a order
+* PUT api/v1/payment/:orderId - Cancel a order
+* POST api/v1/payment/receive-webhook - Receive webhook
+* GET api/v1/payment/check/:orderId - Check is prenium
 
 4. Permissions
 * POST api/v1/permissons - Create a new permisson
@@ -169,6 +179,14 @@ This project is a backend implementation for a Sound Cloud Clone, built using Ne
 * GET api/v1/likes - Fetch list like of user with paginate
 * GET api/v1/likes/check/:id - Check if the user liked the track
 
+9. Followers
+* POST api/v1/followers - Create a new follower
+* GET api/v1/followers - Fetch list follower with paginate
+* GET api/v1/followers/:id - Check if the user is followed
+
+10. Files
+* POST api/v1/files/upload - Upload single file
+
 ## Authentication
 The application uses Passport JWT for authentication. To authenticate, send a POST request to /auth/login with the user's credentials. The response will include a JWT token which should be included in the Authorization header of subsequent requests.
 1. Example request:
@@ -192,7 +210,9 @@ The application uses Passport JWT for authentication. To authenticate, send a PO
                     "_id": "",
                     "name": ""
                 },
-                "permissions": []
+               "avatar": "avatar.png",
+               "type": "CREDENTIAL",
+               "isVerify": true
             }
         }
      }
