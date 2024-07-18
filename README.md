@@ -1,11 +1,15 @@
 # SOUND CLOUD CLONE
 
 This project is a backend implementation for a Sound Cloud Clone, built using NestJS. The backend provides a range of functionalities, including authentication, user registration, email confirmation, payment integration, role-based access control, file uploads, and various APIs for Sound Cloud functionalities.
-You can use my Backend here: [https://soundcloudclone-nest.onrender.com/](https://soundcloudclone-nest.onrender.com/)
+You can use my Backend here: [https://soundcloudclone-nest.onrender.com/](https://soundcloudclone-nest.onrender.com/swagger)
 
-## Tech List
-![nest](https://res.cloudinary.com/dcyzg2k36/image/upload/v1721302282/nestjs_logo_icon_168087_wkjoa8.png)
-![ts](https://res.cloudinary.com/dcyzg2k36/image/upload/v1721302534/typescript_original_logo_icon_146317_izensp.png)
+## Tech Stack
+![nest](https://res.cloudinary.com/dcyzg2k36/image/upload/v1721302282/nestjs_logo_icon_168087_wkjoa8.png) 
+![ts](https://res.cloudinary.com/dcyzg2k36/image/upload/v1721302534/typescript_original_logo_icon_146317_izensp.png) 
+![passport](https://res.cloudinary.com/dcyzg2k36/image/upload/v1721306764/passport_logo_icon_248891_spnxpl.png) 
+![node mailer](https://res.cloudinary.com/dcyzg2k36/image/upload/v1721306991/16486629_1_ltkprh.png)
+![mongoDB](https://res.cloudinary.com/dcyzg2k36/image/upload/v1721307166/file_type_mongo_icon_130383_txrpvl.png)
+![swagger](https://res.cloudinary.com/dcyzg2k36/image/upload/v1721307250/file_type_swagger_icon_130134_pupiea.png) 
 
 - **NestJS**: A progressive Node.js framework for building efficient, reliable, and scalable server-side applications.
 - **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
