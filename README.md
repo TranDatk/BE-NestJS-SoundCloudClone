@@ -1,24 +1,37 @@
-# User Management API
+# SOUND CLOUD CLONE
 
-This project is a User Management API built with NestJS. It includes user CRUD operations, user authentication using Passport JWT, file uploads for user images, and user role-based permissions.
+This project is a backend implementation for a Sound Cloud Clone, built using NestJS. The backend provides a range of functionalities, including authentication, user registration, email confirmation, payment integration, role-based access control, file uploads, and various APIs for Sound Cloud functionalities.
+
+## Tech List
+
+- **NestJS**: A progressive Node.js framework for building efficient, reliable, and scalable server-side applications.
+- **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
+- **JWT (JSON Web Tokens)**: For stateless authentication.
+- **Passport**: Authentication middleware for Node.js.
+  - **Passport-GitHub**: For GitHub login.
+  - **Passport-Google-OAuth20**: For Google login.
+- **Node Mailer**: For sending email confirmations.
+- **PayOS**: For payment processing integration.
+- **MongoDB - Mongoose**: A library that creates a connection between MongoDB and the Node.js.
+- **Swagger**: For API documentation.
+- **Multer**: Middleware for handling `multipart/form-data`, used for file uploads.
 
 ## Table of Contents
 
 - [Installation](#installation)
+- [Features](#features)
 - [Running the Application](#running-the-application)
 - [Environment Variables](#environment-variables)
 - [Endpoints](#endpoints)
 - [Authentication](#authentication)
 - [Permissions and Roles](#permissions-and-roles)
-- [File Uploads](#file-uploads)
-- [License](#license)
 
 ## Installation
 
 1. Clone the repository:
 
    ```bash
-   https://github.com/TranDatk/nestJS-UserManagement.git
+   git clone https://github.com/TranDatk/BE-NestJS-SoundCloudClone.git
    cd nestJS-UserManagement.git
 
 2. Install the dependencies:
@@ -46,6 +59,49 @@ This project is a User Management API built with NestJS. It includes user CRUD o
       #FLAG TO AUTO GENERATE DATABASE
       SHOULD_INIT=true
       INIT_PASSWORD=
+      
+      #CONFIG EMAIL
+      SENDER_EMAIL=
+      PASSWORD_EMAIL=
+      HOST_EMAIL=smtp.gmail.com
+      EMAIL_PREVIEW=false
+      
+      RENDER_BE=
+      
+      GITHUB_CLIENT_ID=
+      GITHUB_CLIENT_SECRET=
+      
+      GITHUB_URL_CALLBACK=
+      
+      #PAYMENT
+      PAYOS_CLIENT_ID=
+      PAYOS_API_KEY=
+      PAYOS_CHECKSUM_KEY=
+
+## Features
+
+1. **User Authentication**:
+   - Login using credentials (JWT - stateless)
+   - Login with GitHub and Google (Powered by Passport)
+
+2. **User Registration and Email Confirmation**:
+   - User registration
+   - Send email confirmation (Powered by Node Mailer)
+
+3. **Logout**:
+   - Stateless logout functionality
+
+4. **Payment Integration**:
+   - Integration with PayOS for payment processing
+
+5. **Role-based Access Control**:
+   - Implement user roles and permissions
+
+6. **File Upload**:
+   - File upload functionality
+
+7. **Sound Cloud APIs**:
+   - Provide various APIs for Sound Cloud functionalities: Auth, User, Track, Like, Comment, Follow, Genre, Payment, Role, Permission, File. 
 
 ## Running the Application
 1. Start the development server:
@@ -91,6 +147,28 @@ This project is a User Management API built with NestJS. It includes user CRUD o
 * PATCH api/v1/roles/:id - Update a role by ID
 * DELETE api/v1/roles/:id - Delete a role by ID
 
+6. Tracks
+* POST api/v1/tracks - Create a new track
+* GET api/v1/tracks - Get all tracks with paginate
+* GET api/v1/tracks/user-track - Fetch list user track with paginate
+* POST api/v1/tracks/top - Fetch top track by genre
+* GET api/v1/tracks/:id - Fetch track by ID
+* PATCH api/v1/tracks/:id - Update track by ID
+* DELETE api/v1/tracks/:id - Remove track by ID
+* GET api/v1/tracks/audio/:id - Get audio from track ID
+* POST api/v1/tracks/search - Fetch tracks by search
+* POST api/v1/tracks/increase-view - Increase view for track
+
+7. Playlists
+* POST api/v1/playlists - Create a playlist
+* GET api/v1/playlists - Fetch list playlist with paginate
+* PATCH api/v1/playlists/:id - Update playlist by ID
+
+8. Likes
+* POST api/v1/likes - Create a new like or negate the one is existed
+* GET api/v1/likes - Fetch list like of user with paginate
+* GET api/v1/likes/check/:id - Check if the user liked the track
+
 ## Authentication
 The application uses Passport JWT for authentication. To authenticate, send a POST request to /auth/login with the user's credentials. The response will include a JWT token which should be included in the Authorization header of subsequent requests.
 1. Example request:
@@ -135,10 +213,3 @@ Users have roles and permissions that define their access to certain resources. 
 * update:user
 * delete:user
 
-# File Uploads
-Users can upload profile pictures using the api/v1/files/upload endpoint. The files are stored in the public folder.
-1. Example request
-   ```bash
-      curl -X POST http://localhost:3000/api/v1/files/upload \
-      -H 'Authorization: Bearer your_jwt_token' \
-      -F 'file=@/path/to/your/file.jpg'
