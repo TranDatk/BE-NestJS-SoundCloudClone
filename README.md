@@ -15,8 +15,6 @@ You can use my Backend here: [https://soundcloudclone-nest.onrender.com/](https:
 - **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
 - **JWT (JSON Web Tokens)**: For stateless authentication.
 - **Passport**: Authentication middleware for Node.js.
-  - **Passport-GitHub**: For GitHub login.
-  - **Passport-Google-OAuth20**: For Google login.
 - **Node Mailer**: For sending email confirmations.
 - **PayOS**: For payment processing integration.
 - **MongoDB - Mongoose**: A library that creates a connection between MongoDB and the Node.js.
@@ -73,13 +71,6 @@ You can use my Backend here: [https://soundcloudclone-nest.onrender.com/](https:
       HOST_EMAIL=smtp.gmail.com
       EMAIL_PREVIEW=false
       
-      RENDER_BE=
-      
-      GITHUB_CLIENT_ID=
-      GITHUB_CLIENT_SECRET=
-      
-      GITHUB_URL_CALLBACK=
-      
       #PAYMENT
       PAYOS_CLIENT_ID=
       PAYOS_API_KEY=
@@ -89,7 +80,7 @@ You can use my Backend here: [https://soundcloudclone-nest.onrender.com/](https:
 
 1. **User Authentication**:
    - Login using credentials (JWT - stateless)
-   - Login with GitHub and Google (Powered by Passport)
+   - Login with GitHub and Google 
 
 2. **User Registration and Email Confirmation**:
    - User registration
