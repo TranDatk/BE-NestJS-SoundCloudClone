@@ -39,7 +39,7 @@ You can use my Backend here: [https://soundcloudclone-nest.onrender.com/](https:
 
    ```bash
    git clone https://github.com/TranDatk/BE-NestJS-SoundCloudClone.git
-   cd nestJS-UserManagement.git
+   cd BE-NestJS-SoundCloudClone
 
 2. Install the dependencies:
    ```bash
